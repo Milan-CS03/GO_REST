@@ -1,11 +1,14 @@
 package routes
 
 import (
+	"fmt"
 	"log"
 	"net/http"
 	"strconv"
 
+	//"github.com/Milan-CS03/GO_REST/auth"
 	"github.com/Milan-CS03/GO_REST/models"
+	//"github.com/Milan-CS03/GO_REST/middleware"
 	"github.com/gin-gonic/gin"
 )
 
@@ -15,11 +18,19 @@ func updateEvent(context *gin.Context) {
 		context.JSON(http.StatusBadRequest, gin.H{"message": "Could not parse ID"})
 		return
 	}
-	_, err = models.GetEventByID(eventID)
+	event, err := models.GetEventByID(eventID)
+	UserID := context.GetInt64("uid")
+	fmt.Println(UserID, event.UserID)
+
 	if err != nil {
 		context.JSON(http.StatusInternalServerError, gin.H{"message": "could not fetch event"})
 		return
 	}
+	if event.UserID != UserID {
+		context.JSON(http.StatusUnauthorized, gin.H{"message": "You are not event owner"})
+		return
+	}
+
 	var updatedEvent models.Event
 	err = context.ShouldBindJSON(&updatedEvent)
 	if err != nil {
@@ -62,6 +73,7 @@ func getEvents(context *gin.Context) {
 }
 
 func createEvents(context *gin.Context) {
+
 	var event models.Event
 	err := context.ShouldBindJSON(&event)
 	if err != nil {
@@ -69,7 +81,7 @@ func createEvents(context *gin.Context) {
 		return
 	}
 	//event.ID = 1
-	event.UserID = 1
+	event.UserID = context.GetInt64("uid")
 	err = event.Save()
 	if err != nil {
 		log.Fatalf("not saving %v", err)

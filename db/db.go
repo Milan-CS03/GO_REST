@@ -31,7 +31,6 @@ func createTables() {
 	if err != nil {
 		log.Fatalf("not updating %v", err)
 		panic(err)
-		panic("could not create user table")
 	}
 
 	createEventsTable := `

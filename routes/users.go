@@ -1,11 +1,13 @@
 package routes
 
 import (
-	"github.com/gin-gonic/gin"
 	"log"
 	"net/http"
 
+	"github.com/gin-gonic/gin"
+
 	"github.com/Milan-CS03/GO_REST/models"
+	"github.com/Milan-CS03/GO_REST/utils"
 )
 
 func signup(context *gin.Context) {
@@ -39,6 +41,13 @@ func login(context *gin.Context) {
 		context.JSON(http.StatusUnauthorized, gin.H{"message": err.Error()})
 		return
 	}
-	context.JSON(http.StatusOK, gin.H{"message": "login successful!", "user": user})
+	token, err := utils.GenerateToken(user.Email, user.ID)
+	if err != nil {
+		context.JSON(http.StatusInternalServerError, gin.H{"message": "could not authenticate user"})
+		return
+
+	}
+
+	context.JSON(http.StatusOK, gin.H{"message": "login successful!", "token": token})
 
 }
