@@ -1,11 +1,12 @@
 package routes
 
 import (
-	"github.com/Milan-CS03/GO_REST/models"
-	"github.com/gin-gonic/gin"
 	"log"
 	"net/http"
 	"strconv"
+
+	"github.com/Milan-CS03/GO_REST/models"
+	"github.com/gin-gonic/gin"
 )
 
 func updateEvent(context *gin.Context) {
@@ -76,5 +77,25 @@ func createEvents(context *gin.Context) {
 		return
 	}
 	context.JSON(http.StatusCreated, gin.H{"message": "event created", "event": event})
+
+}
+
+func deleteEvent(context *gin.Context) {
+	eventID, err := strconv.ParseInt(context.Param("id"), 10, 64)
+	if err != nil {
+		context.JSON(http.StatusBadRequest, gin.H{"message": "Could not parse ID"})
+		return
+	}
+	event, err := models.GetEventByID(eventID)
+	if err != nil {
+		context.JSON(http.StatusInternalServerError, gin.H{"message": "could not fetch event"})
+		return
+	}
+	err = event.Delete()
+	if err != nil {
+		context.JSON(http.StatusInternalServerError, gin.H{"message": "could not delete event"})
+		return
+	}
+	context.JSON(http.StatusOK, gin.H{"message": "event deleted from DB"})
 
 }
