@@ -1,9 +1,9 @@
 package models
 
 import (
-	"time"
-
 	"github.com/Milan-CS03/GO_REST/db"
+	//"log"
+	"time"
 	//"github.com/pelletier/go-toml/query"
 )
 
@@ -65,4 +65,21 @@ func GetAllEvents() ([]Event, error) {
 		events = append(events, event)
 	}
 	return events, nil
+}
+
+func (event Event) Update() error {
+	query := `
+	UPDATE events
+	SET name = ?, description = ?, location = ?, dateTime = ?
+	WHERE id = ?
+	`
+	stmt, err := db.DB.Prepare(query)
+	//log.Fatalf("not updating %v", stmt)
+
+	if err != nil {
+		return err
+	}
+	defer stmt.Close()
+	_, err = stmt.Exec(event.Name, event.Description, event.Location, event.DateTime, event.ID)
+	return err
 }
