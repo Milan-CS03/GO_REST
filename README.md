@@ -11,15 +11,15 @@ if you run the server in local, the urls to access these endpoints will be
 
 <br>http://localhost:8080/events            (get all events)
 <br>
-http://localhost:8080/events/:id           (get event for specific id)
+http://localhost:8080/events/id           (get event for specific id)
 <br>
 http://localhost:8080/events                (to postevent, you need to be logged in and pass jwt token in request which you get on login )
 <br>
-http://localhost:8080/events/:id        (to edit/delete event, you need to be logged in and pass jwt token in request which you get on login )
+http://localhost:8080/events/id        (to edit/delete specific id event, you need to be logged in and pass jwt token in request which you get on login )
 <br>
 http://localhost:8080/signup/              (to sign up, need to pass email and password)	
 <br>
 http://localhost:8080/login/               (to log in, need to pass email and password)
 <br>
-http://localhost:8080/events/:id/register     (to register or cancel registration)
+http://localhost:8080/events/id/register     (to register or cancel registration for specific id)
 <br>
