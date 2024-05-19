@@ -77,5 +77,5 @@ This project uses JWT for authentication. After logging in, include the JWT in t
 
 ## Middleware
 - **JWT Middleware:** Validates the token and authorizes the user.
-- **Error Handling Middleware:** Manages errors and provides meaningful responses.
+
 
