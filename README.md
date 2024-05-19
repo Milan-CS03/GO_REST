@@ -13,7 +13,6 @@ This project is a RESTful API for managing events, built with the Gin framework 
 - Go (Gin Framework)
 - SQLite
 - JWT for authentication
-- Swagger for API documentation
 
 ## Installation
 1. **Clone the repository:**
